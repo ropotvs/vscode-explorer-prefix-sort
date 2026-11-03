@@ -5,7 +5,7 @@
   "version": "1.0.0",
   "publisher": "ropotvs",
   "private": true,
-  "license": "UNLICENSED",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/ropotvs/vscode-explorer-prefix-sort"
@@ -15,7 +15,9 @@
   },
   "main": "./extension.cjs",
   "files": [
-    "extension.cjs"
+    "extension.cjs",
+    "README.md",
+    "LICENSE"
   ],
   "activationEvents": [
     "onStartupFinished"

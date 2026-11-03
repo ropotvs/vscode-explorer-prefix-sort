@@ -15,7 +15,6 @@ execFileSync(
     '@vscode/vsce@4.1.0',
     'package',
     '--no-dependencies',
-    '--skip-license',
     '--out',
     vsix,
   ],
