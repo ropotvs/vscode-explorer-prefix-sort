@@ -1,0 +1,23 @@
+{
+  "name": "explorer-prefix-sort",
+  "displayName": "Explorer Prefix Sort",
+  "description": "Keeps the explorer, sorted by modified, in a name order with x.ts before x-y.ts",
+  "version": "1.0.0",
+  "publisher": "ropotvs",
+  "private": true,
+  "license": "UNLICENSED",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ropotvs/vscode-explorer-prefix-sort"
+  },
+  "engines": {
+    "vscode": "^1.90.0"
+  },
+  "main": "./extension.cjs",
+  "files": [
+    "extension.cjs"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ]
+}
