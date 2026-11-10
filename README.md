@@ -31,9 +31,10 @@ Extensions can't change how the explorer sorts. Sorted by modified, the explorer
 lists the newest first, with folders ahead of files. The extension raises the
 modified times in each folder so that newest-first matches the order it wants.
 
-- Files are compared by name without the extension, so `x` comes before `x-y`.
-  Numbers compare as numbers: `v2` before `v10`.
-- Folders are compared by their full name.
+- Names are compared with `.` sorting before any other character, so `x.ts`,
+  `x.spec.ts` and `x.test.ts` all come before `x-y.ts`. Numbers compare as
+  numbers: `v2` before `v10`.
+- Folders and files are compared the same way.
 - It runs when VS Code starts and after each file is saved, created or deleted.
 - It only walks folders holding files git tracks or would track, so `node_modules`
   and build output are never walked.

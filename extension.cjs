@@ -2,7 +2,7 @@
 // mtimes in each folder makes it read in a name order where `x.ts` comes before `x-y.ts`.
 const { execFile } = require('node:child_process');
 const { readdir, stat, utimes } = require('node:fs/promises');
-const { dirname, join, parse } = require('node:path');
+const { dirname, join } = require('node:path');
 const vscode = require('vscode');
 
 exports.activate = (context) => {
@@ -10,6 +10,18 @@ exports.activate = (context) => {
   const dirty = new Set();
   let timer;
   let running = Promise.resolve();
+
+  // Names are compared piece by piece between dots, so a `.` sorts before any other
+  // character: `x.ts` and `x.test.ts` come ahead of `x-y.ts`
+  const compare = (a, b) => {
+    const left = a.split('.');
+    const right = b.split('.');
+    for (let i = 0; i < Math.min(left.length, right.length); i++) {
+      const order = collator.compare(left[i], right[i]);
+      if (order) return order;
+    }
+    return left.length - right.length;
+  };
 
   // Only folders holding files git keeps, so node_modules and build output are never walked.
   const known = (root) =>
@@ -56,15 +68,9 @@ exports.activate = (context) => {
       .filter((document) => document.isDirty)
       .map((document) => document.uri.fsPath);
     for (const folder of [true, false]) {
-      // A file is ordered by its name without the extension, so `x` comes ahead of `x-y`
-      const key = (entry) => (folder ? entry.name : parse(entry.name).name);
       const list = entries
         .filter((entry) => entry?.folder === folder)
-        .sort(
-          (a, b) =>
-            collator.compare(key(a), key(b)) ||
-            collator.compare(a.name, b.name),
-        );
+        .sort((a, b) => compare(a.name, b.name));
       for (let i = list.length - 2; i >= 0; i--) {
         // Raised only, so cargo never takes an edited file as built; an unsaved file is left,
         // as VS Code refuses to save over a file that changed on disk
